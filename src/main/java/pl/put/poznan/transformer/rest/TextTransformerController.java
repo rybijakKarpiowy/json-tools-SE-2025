@@ -60,16 +60,20 @@ public class TextTransformerController {
     }
 
     @PostMapping("/json/query-keys")
-    public String minify(@RequestBody JsonTransformRequest request) {
+    public String query(@RequestBody JsonTransformRequest request) {
         logger.debug("Query json keys: " + Arrays.toString(request.getKeys()) + "; json: " + request.getJson());
         // TODO: query specific keys
-        return "";
+        JsonUtils jsonUtils = new JsonUtils();
+        String out = jsonUtils.Query(request.getJson(), request.getKeys());
+        return out;
     }
 
     @PostMapping("/json/prune-keys")
     public String prune(@RequestBody JsonTransformRequest request) {
         logger.debug("Prune json keys: " + Arrays.toString(request.getKeys()) + "; json: " + request.getJson());
-        return "";
+        JsonUtils jsonUtils = new JsonUtils();
+        String out = jsonUtils.Prune(request.getJson(), request.getKeys());
+        return out;
     }
 
     @PostMapping("/text/compare")
@@ -78,4 +82,3 @@ public class TextTransformerController {
         return "";
     }
 }
-
