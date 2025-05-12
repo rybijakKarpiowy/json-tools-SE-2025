@@ -4,6 +4,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import pl.put.poznan.transformer.dto.JsonTransformRequest;
 import pl.put.poznan.transformer.dto.TextCompareRequest;
+import pl.put.poznan.transformer.logic.JsonUtils;
 import pl.put.poznan.transformer.logic.TextTransformer;
 
 import java.util.Arrays;
@@ -43,8 +44,19 @@ public class TextTransformerController {
     @PostMapping("/json/minify")
     public String minify(@RequestBody String text) {
         logger.debug("Minify json: " + text);
-        // TODO: minify json
-        return "";
+        JsonUtils jsonUtils = new JsonUtils();
+        String out = jsonUtils.Minify(text);
+        logger.debug("Minified json: " + out);
+        return out;
+    }
+
+    @PostMapping("/json/prettify")
+    public String prettify(@RequestBody String text) {
+        logger.debug("Prettify json: " + text);
+        JsonUtils jsonUtils = new JsonUtils();
+        String out = jsonUtils.Prettify(text);
+        logger.debug("Prettified json: " + out);
+        return out;
     }
 
     @PostMapping("/json/query-keys")
