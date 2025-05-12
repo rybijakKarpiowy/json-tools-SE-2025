@@ -6,6 +6,7 @@ import pl.put.poznan.transformer.dto.JsonTransformRequest;
 import pl.put.poznan.transformer.dto.TextCompareRequest;
 import pl.put.poznan.transformer.logic.JsonUtils;
 import pl.put.poznan.transformer.logic.TextTransformer;
+import pl.put.poznan.transformer.logic.TextUtils;
 
 import java.util.Arrays;
 
@@ -79,6 +80,8 @@ public class TextTransformerController {
     @PostMapping("/text/compare")
     public String compare(@RequestBody TextCompareRequest request) {
         logger.debug("Compare text: " + request.getText1() + "; text2: " + request.getText2());
-        return "";
+        TextUtils textUtils = new TextUtils();
+        String out = textUtils.Diff(request.getText1(), request.getText2());
+        return out;
     }
 }
