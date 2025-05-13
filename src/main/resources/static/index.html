@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Text Transformer Client</title>
+    <style>
+        .section { display: none; margin-top: 20px; }
+        textarea, input { width: 100%; margin-top: 5px; }
+        pre { background: #f3f3f3; padding: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Text Transformer API Client</h1>
+
+    <label for="apiFunction">Select API Function:</label>
+    <select id="apiFunction" onchange="showSection()">
+        <option value="">-- Select Function --</option>
+        <option value="jsonMinify">Minify JSON</option>
+        <option value="jsonPrettify">Prettify JSON</option>
+        <option value="jsonQuery">Query JSON Keys</option>
+        <option value="jsonPrune">Prune JSON Keys</option>
+        <option value="textCompare">Compare Text</option>
+    </select>
+
+    <!-- JSON Minify -->
+    <div class="section" id="jsonMinify">
+        <h2>Minify JSON</h2>
+        <textarea id="jsonMinifyInput" rows="5" placeholder="Enter JSON"></textarea>
+        <button onclick="minifyJson()">Minify</button>
+        <pre id="minifyResult"></pre>
+    </div>
+
+    <!-- JSON Prettify -->
+    <div class="section" id="jsonPrettify">
+        <h2>Prettify JSON</h2>
+        <textarea id="jsonPrettifyInput" rows="5" placeholder="Enter JSON"></textarea>
+        <button onclick="prettifyJson()">Prettify</button>
+        <pre id="prettifyResult"></pre>
+    </div>
+
+    <!-- JSON Query -->
+    <div class="section" id="jsonQuery">
+        <h2>Query JSON Keys</h2>
+        <textarea id="jsonQueryInput" rows="5" placeholder="Enter JSON"></textarea>
+        <input type="text" id="queryKeys" placeholder="Keys (comma-separated)">
+        <button onclick="queryJsonKeys()">Query</button>
+        <pre id="queryResult"></pre>
+    </div>
+
+    <!-- JSON Prune -->
+    <div class="section" id="jsonPrune">
+        <h2>Prune JSON Keys</h2>
+        <textarea id="jsonPruneInput" rows="5" placeholder="Enter JSON"></textarea>
+        <input type="text" id="pruneKeys" placeholder="Keys to prune (comma-separated)">
+        <button onclick="pruneJsonKeys()">Prune</button>
+        <pre id="pruneResult"></pre>
+    </div>
+
+    <!-- Text Compare -->
+    <div class="section" id="textCompare">
+        <h2>Compare Text</h2>
+        <textarea id="text1" rows="3" placeholder="Text 1"></textarea>
+        <textarea id="text2" rows="3" placeholder="Text 2"></textarea>
+        <button onclick="compareText()">Compare</button>
+        <pre id="compareResult"></pre>
+    </div>
+
+    <script>
+        const baseUrl = "http://localhost:8080/api";
+
+        function showSection() {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(s => s.style.display = 'none');
+            const selected = document.getElementById("apiFunction").value;
+            if (selected) {
+                document.getElementById(selected).style.display = 'block';
+            }
+        }
+
+        async function callApi(endpoint, method = 'GET', body = null, headers = {}) {
+            const options = {
+                method,
+                headers: {"Content-Type": "application/json", ...headers}
+            };
+            if (body) {
+                options.body = JSON.stringify(body);
+            }
+
+            const res = await fetch(`${baseUrl}${endpoint}`, options);
+            return res.text();
+        }
+
+        function minifyJson() {
+            const json = document.getElementById("jsonMinifyInput").value;
+            callApi("/json/minify", "POST", json)
+                .then(data => document.getElementById("minifyResult").textContent = data);
+        }
+
+        function prettifyJson() {
+            const json = document.getElementById("jsonPrettifyInput").value;
+            callApi("/json/prettify", "POST", json)
+                .then(data => document.getElementById("prettifyResult").textContent = data);
+        }
+
+        function queryJsonKeys() {
+            const json = document.getElementById("jsonQueryInput").value;
+            const keys = document.getElementById("queryKeys").value.split(",").map(v => v.trim());
+            callApi("/json/query-keys", "POST", { json, keys })
+                .then(data => document.getElementById("queryResult").textContent = data);
+        }
+
+        function pruneJsonKeys() {
+            const json = document.getElementById("jsonPruneInput").value;
+            const keys = document.getElementById("pruneKeys").value.split(",").map(v => v.trim());
+            callApi("/json/prune-keys", "POST", { json, keys })
+                .then(data => document.getElementById("pruneResult").textContent = data);
+        }
+
+        function compareText() {
+            const text1 = document.getElementById("text1").value;
+            const text2 = document.getElementById("text2").value;
+            callApi("/text/compare", "POST", { text1, text2 })
+                .then(data => document.getElementById("compareResult").textContent = data);
+        }
+    </script>
+</body>
+</html>
+
