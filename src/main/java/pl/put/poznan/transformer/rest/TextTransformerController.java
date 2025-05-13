@@ -63,7 +63,6 @@ public class TextTransformerController {
     @PostMapping("/json/query-keys")
     public String query(@RequestBody JsonTransformRequest request) {
         logger.debug("Query json keys: " + Arrays.toString(request.getKeys()) + "; json: " + request.getJson());
-        // TODO: query specific keys
         JsonUtils jsonUtils = new JsonUtils();
         String out = jsonUtils.Query(request.getJson(), request.getKeys());
         return out;
