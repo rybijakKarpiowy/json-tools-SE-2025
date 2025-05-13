@@ -3,6 +3,36 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
+    <groupId>pl.put.poznan</groupId>
+    <artifactId>JsonToolsApp</artifactId>
+    <version>0.1</version>
+    <name>Json Tools</name>
+    <description>A simple Spring Boot application for JSON tools</description>
+    <url>https://github.com/rybijakKarpiowy/json-tools-SE-2025</url>
+
+    <licenses>
+        <license>
+            <name>The MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://github.com/rybijakKarpiowy/json-tools-SE-2025</url>
+        <connection>scm:git:git://github.com/rybijakKarpiowy/json-tools-SE-2025.git</connection>
+        <developerConnection>scm:git:ssh://github.com/rybijakKarpiowy/json-tools-SE-2025.git</developerConnection>
+    </scm>
+
+    <developers>
+        <developer>
+            <id>rybijakKarpiowy</id>
+            <name>Rybijak Karpiowy</name>
+            <url>https://github.com/rybijakKarpiowy</url>
+        </developer>
+    </developers>
+
     <distributionManagement>
         <repository>
             <id>github</id>
@@ -10,20 +40,17 @@
             <url>https://maven.pkg.github.com/rybijakKarpiowy/json-tools-SE-2025</url>
         </repository>
     </distributionManagement>
-         
+
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.3.3.RELEASE</version>
     </parent>
-    <groupId>pl.put.poznan</groupId>
-    <artifactId>JsonToolsApp</artifactId>
-    <name>Json Tools</name>
-    <version>0.1</version>
+
     <properties>
         <java.version>11</java.version>
     </properties>
-    
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -40,7 +67,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
@@ -56,7 +82,7 @@
             </plugin>
         </plugins>
     </build>
-    
+
     <repositories>
         <repository>
             <id>spring-releases</id>
