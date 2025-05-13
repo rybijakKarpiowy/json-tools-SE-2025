@@ -1,9 +1,7 @@
 package pl.put.poznan.transformer.logic;
+
 import com.google.gson.*;
 import pl.put.poznan.transformer.exceptions.JsonParsingException;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class JsonUtils {
     private JsonElement parse(String text) {
@@ -40,9 +38,10 @@ public class JsonUtils {
         JsonObject filtered = new JsonObject();
 
         for (String key : keys) {
-            if (obj.has(key)) {
-                JsonElement val = obj.get(key);
-                filtered.add(key, val);
+            String[] parts = key.split("\\.");
+            JsonElement val = this.getNestedValue(obj, parts, 0);
+            if (val != null) {
+                this.addNested(filtered, parts, 0, val);
             }
         }
 
@@ -51,18 +50,62 @@ public class JsonUtils {
 
     public String Prune(String json, String[] keys) {
         JsonElement element = this.parse(json);
-        JsonObject obj = element.getAsJsonObject();
-        JsonObject filtered = new JsonObject();
-        List<String> keysList = Arrays.asList(keys);
+        JsonObject pruned = element.getAsJsonObject();
 
-        for (String key : obj.keySet()) {
-            System.out.println(key);
-            if (!keysList.contains(key)) {
-                JsonElement val = obj.get(key);
-                filtered.add(key, val);
-            }
+        for (String key : keys) {
+            String[] parts = key.split("\\.");
+            this.removeNested(pruned, parts, 0);
         }
 
-        return this.getString(filtered);
+        return this.getString(pruned);
+    }
+
+    /**
+     * Recursively retrieves a nested value from a JsonObject using key parts.
+     */
+    private JsonElement getNestedValue(JsonObject obj, String[] parts, int idx) {
+        if (idx >= parts.length) return obj;
+        if (!obj.has(parts[idx])) return null;
+        JsonElement el = obj.get(parts[idx]);
+        if (idx == parts.length - 1) {
+            return el;
+        }
+        if (el.isJsonObject()) {
+            return getNestedValue(el.getAsJsonObject(), parts, idx + 1);
+        }
+        return null;
+    }
+
+    /**
+     * Recursively adds a value to a JsonObject at the nested path specified by parts.
+     */
+    private void addNested(JsonObject obj, String[] parts, int idx, JsonElement value) {
+        String key = parts[idx];
+        if (idx == parts.length - 1) {
+            obj.add(key, value);
+            return;
+        }
+        JsonObject child;
+        if (obj.has(key) && obj.get(key).isJsonObject()) {
+            child = obj.getAsJsonObject(key);
+        } else {
+            child = new JsonObject();
+            obj.add(key, child);
+        }
+        addNested(child, parts, idx + 1, value);
+    }
+
+    /**
+     * Recursively removes a nested key from a JsonObject using key parts.
+     */
+    private void removeNested(JsonObject obj, String[] parts, int idx) {
+        if (idx >= parts.length - 1) {
+            obj.remove(parts[idx]);
+            return;
+        }
+        if (obj.has(parts[idx]) && obj.get(parts[idx]).isJsonObject()) {
+            JsonObject child = obj.getAsJsonObject(parts[idx]);
+            removeNested(child, parts, idx + 1);
+        }
     }
 }
