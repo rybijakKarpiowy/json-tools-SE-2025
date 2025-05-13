@@ -46,7 +46,7 @@ jobs:
         uses: actions/upload-artifact@v4.6.2
         with:
           name: JsonToolsApp
-          path: target/JsonToolsApp.jar
+          path: target/jsontoolsapp.jar
 
       - name: Publish to GitHub Packages
         run: mvn -B deploy
