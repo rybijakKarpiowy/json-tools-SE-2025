@@ -7,7 +7,7 @@
     <groupId>pl.put.poznan</groupId>
     <artifactId>JsonToolsApp</artifactId>
     <version>0.1</version>
-    <name>Json Tools</name>
+    <name>JsonToolsApp</name>
     <description>A simple Spring Boot application for JSON tools</description>
     <url>https://github.com/rybijakKarpiowy/json-tools-SE-2025</url>
 
@@ -19,16 +19,10 @@
         </license>
     </licenses>
 
-    <scm>
-        <url>https://github.com/rybijakKarpiowy/json-tools-SE-2025</url>
-        <connection>scm:git:git://github.com/rybijakKarpiowy/json-tools-SE-2025.git</connection>
-        <developerConnection>scm:git:ssh://github.com/rybijakKarpiowy/json-tools-SE-2025.git</developerConnection>
-    </scm>
-
     <developers>
         <developer>
             <id>rybijakKarpiowy</id>
-            <name>Rybijak Karpiowy</name>
+            <name>rybijakKarpiowy</name>
             <url>https://github.com/rybijakKarpiowy</url>
         </developer>
     </developers>
