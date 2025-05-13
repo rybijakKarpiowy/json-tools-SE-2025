@@ -11,5 +11,9 @@ jobs:
                 java-version: '11'
                 distribution: 'adopt'
                 cache: maven
-          - name: Validate, build and run tests
-            run: mvn --batch-mode --update-snapshots verify
+
+          - name: Compile with maven
+            run: mvn compile
+          
+          - name: Build a package
+            run: mvn package
