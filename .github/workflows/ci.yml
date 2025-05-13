@@ -16,3 +16,8 @@ jobs:
         run: mvn -B compile
       - name: Build package
         run: mvn -B package
+      - name: Upload built JAR
+        uses: actions/upload-artifact@v3
+        with:
+          name: JsonToolsApp
+          path: target/JsonToolsApp.jar
