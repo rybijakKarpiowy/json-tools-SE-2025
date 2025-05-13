@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>pl.put.poznan</groupId>
-    <artifactId>JsonToolsApp</artifactId>
+    <artifactId>json-tools-app</artifactId>
     <version>0.1</version>
     <name>JsonToolsApp</name>
     <description>A simple Spring Boot application for JSON tools</description>
