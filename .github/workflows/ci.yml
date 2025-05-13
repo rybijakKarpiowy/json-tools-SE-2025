@@ -10,54 +10,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 11
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: '11'
           distribution: 'temurin'
-          cache: maven
-          server-id: github
-          server-username: GITHUB_ACTOR
-          server-password: GITHUB_TOKEN
-
-      - name: Configure Maven settings
-        run: |
-          mkdir -p ~/.m2
-          echo '<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
-                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
-                                    http://maven.apache.org/xsd/settings-1.0.0.xsd">
-              
-                <activeProfiles>
-                  <activeProfile>github</activeProfile>
-                </activeProfiles>
-              
-                <profiles>
-                  <profile>
-                    <id>github</id>
-                    <repositories>
-                      <repository>
-                        <id>central</id>
-                        <url>https://repo1.maven.org/maven2</url>
-                      </repository>
-                      <repository>
-                        <id>github</id>
-                        <url>https://maven.pkg.github.com/OWNER/REPOSITORY</url>
-                        <snapshots>
-                          <enabled>true</enabled>
-                        </snapshots>
-                      </repository>
-                    </repositories>
-                  </profile>
-                </profiles>
-              
-                <servers>
-                  <server>
-                    <id>github</id>
-                    <username>USERNAME</username>
-                    <password>TOKEN</password>
-                  </server>
-                </servers>
-              </settings>' > ~/.m2/settings.xml
 
       - name: Compile with Maven
         run: mvn -B compile
@@ -73,4 +29,4 @@ jobs:
       - name: Publish to GitHub Packages
         run: mvn -B deploy
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
