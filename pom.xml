@@ -12,13 +12,18 @@
     </parent>
 
     <groupId>pl.put.poznan</groupId>
-    <artifactId>json-tools</artifactId>
+    <artifactId>JsonToolsApp</artifactId>
+
+    <name>Json Tools</name>
     <version>0.1</version>
 
 	<properties>
         <java.version>11</java.version>
     </properties>
 
+    <build>
+        <finalName>JsonToolsApp</finalName>
+    </build>
     
     <dependencies>
         <dependency>

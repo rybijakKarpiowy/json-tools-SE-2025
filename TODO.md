@@ -1,4 +1,0 @@
-- [ ] better error handling
-- [ ] think about dividing into more classes (single TextTransformController)
-- [x] think about extending key filtering to support subpaths (root.path.subpath)
-- [ ] write comments and docs
