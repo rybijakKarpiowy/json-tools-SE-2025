@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.*;
 import pl.put.poznan.transformer.dto.JsonTransformRequest;
 import pl.put.poznan.transformer.dto.TextCompareRequest;
 import pl.put.poznan.transformer.logic.JsonUtils;
-import pl.put.poznan.transformer.logic.TextTransformer;
 import pl.put.poznan.transformer.logic.TextUtils;
 
 import java.util.Arrays;
@@ -13,34 +12,9 @@ import java.util.Arrays;
 
 @RestController
 @RequestMapping("/api/")
-public class TextTransformerController {
+public class JsonToolsController {
 
-    private static final Logger logger = LoggerFactory.getLogger(TextTransformerController.class);
-
-    @GetMapping("/text/to-upper/{text}")
-    public String get(@PathVariable String text,
-                              @RequestParam(value="transforms", defaultValue="upper,escape") String[] transforms) {
-
-        // log the parameters
-        logger.debug(text);
-        logger.debug(Arrays.toString(transforms));
-
-        // perform the transformation, you should run your logic here, below is just a silly example
-        TextTransformer transformer = new TextTransformer(transforms);
-        return transformer.transform(text);
-    }
-
-    @PostMapping("/text/to-upper/{text}")
-    public String post(@PathVariable String text, @RequestBody String[] transforms) {
-
-        // log the parameters
-        logger.debug(text);
-        logger.debug(Arrays.toString(transforms));
-
-        // perform the transformation, you should run your logic here, below is just a silly example
-        TextTransformer transformer = new TextTransformer(transforms);
-        return transformer.transform(text);
-    }
+    private static final Logger logger = LoggerFactory.getLogger(JsonToolsController.class);
 
     @PostMapping("/json/minify")
     public String minify(@RequestBody String text) {
