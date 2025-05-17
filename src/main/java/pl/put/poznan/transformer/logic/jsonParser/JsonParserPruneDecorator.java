@@ -8,7 +8,7 @@ public class JsonParserPruneDecorator extends JsonParserDecorator {
         this.prune();
     }
 
-    public void prune() {
+    private void prune() {
         JsonObject pruned = this.json.getAsJsonObject();
 
         for (String key : this.keys) {

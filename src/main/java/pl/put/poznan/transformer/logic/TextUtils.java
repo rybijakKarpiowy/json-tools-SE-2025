@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TextUtils {
-    public String Diff(String text1, String text2) {
+    public static String diff(String text1, String text2) {
         String[] left = text1.split("\n");
         String[] right = text2.split("\n");
 

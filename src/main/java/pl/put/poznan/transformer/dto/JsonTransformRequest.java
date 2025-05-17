@@ -24,5 +24,7 @@ public class JsonTransformRequest {
 
     public Boolean getPretty() { return pretty; }
 
-    public void setPretty(Boolean pretty) { this.pretty = pretty; }
+    public void setPretty(Boolean pretty) {
+        this.pretty = pretty;
+    }
 }

@@ -78,9 +78,7 @@ public class JsonToolsController {
     public String compare(@RequestBody TextCompareRequest request) {
         logger.debug("Compare text: " + request.getText1() + "; text2: " + request.getText2());
 
-        TextUtils textUtils = new TextUtils();
-
-        String out = textUtils.Diff(request.getText1(), request.getText2());
+        String out = TextUtils.diff(request.getText1(), request.getText2());
         logger.debug("Compared text: " + out);
         return out;
     }
