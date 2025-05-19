@@ -3,7 +3,13 @@ on:
   push:
     branches:
       - '**'
-
+    paths-ignore:
+      - '**.md'
+      - '**.xlxs'
+      - '.github/**'
+      - '.gitignore'
+      - '.gitattributes'
+      
 jobs:
   build:
     runs-on: ubuntu-latest
