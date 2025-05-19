@@ -49,6 +49,7 @@ jobs:
           path: target/*.jar
           if-no-files-found: error
           overwrite: true
+          retention-days: 7
   
       - name: Publish to GitHub Packages
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
