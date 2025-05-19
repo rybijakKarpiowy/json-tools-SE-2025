@@ -6,7 +6,7 @@
 
     <groupId>pl.put.poznan</groupId>
     <artifactId>json-tools-app</artifactId>
-    <version>0.2</version>
+    <version>0.3.2</version>
     <name>JsonToolsApp</name>
     <description>A simple Spring Boot application for JSON tools</description>
     <url>https://github.com/rybijakKarpiowy/json-tools-SE-2025</url>
@@ -78,6 +78,15 @@
     </build>
 
     <repositories>
+        <repository>
+            <id>central</id>
+            <name>Maven Repository Switchboard</name>
+            <layout>default</layout>
+            <url>https://repo1.maven.org/maven2</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
         <repository>
             <id>spring-releases</id>
             <url>https://repo.spring.io/libs-release</url>
