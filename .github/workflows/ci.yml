@@ -46,6 +46,7 @@ jobs:
         run: mvn -B javadoc:javadoc
               
       - name: Deploy Javadoc to GitHub Pages
+        if: github.ref == 'refs/heads/main'
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
