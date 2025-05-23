@@ -6,7 +6,6 @@ on:
     paths-ignore:
       - '**.md'
       - '**.xlxs'
-      - '.github/**'
       - '.gitignore'
       - '.gitattributes'
       
@@ -42,6 +41,28 @@ jobs:
   
       - name: Run tests
         run: mvn -B test
+
+      - name: Generate Javadoc
+        run: mvn -B javadoc:javadoc
+              
+      - name: Deploy Javadoc to GitHub Pages
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Clone the gh-pages branch using a temporary directory
+          git clone --depth=1 --branch=gh-pages https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} gh-pages
+
+          # Clean old content and copy new Javadoc
+          rm -rf gh-pages/*
+          cp -r target/site/apidocs/* gh-pages/
+
+          # Commit and push changes
+          cd gh-pages
+          git add .
+          git commit -m "Update Javadoc for version ${{ env.PROJECT_VERSION }}"
+          git push origin gh-pages
   
       - name: List build outputs
         run: ls -la target/
