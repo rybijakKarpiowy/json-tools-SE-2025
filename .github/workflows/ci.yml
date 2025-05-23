@@ -42,7 +42,10 @@ jobs:
   
       - name: Run tests
         run: mvn -B test
-  
+
+      - name: Generate Javadoc
+        run: mvn -B javadoc:javadoc
+      
       - name: List build outputs
         run: ls -la target/
   
