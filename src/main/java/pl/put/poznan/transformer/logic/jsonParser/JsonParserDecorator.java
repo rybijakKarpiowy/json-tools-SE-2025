@@ -27,6 +27,7 @@ public abstract class JsonParserDecorator extends JsonParser {
      */
     public JsonParserDecorator(JsonParser parser, String[] keys) {
         super(parser.getString());
+        logger.debug("Creating JsonParserDecorator with parser: " + parser.getClass().getSimpleName() + " and keys: " + String.join(", ", keys));
         this.keys = keys;
         this.parser = parser;
     }

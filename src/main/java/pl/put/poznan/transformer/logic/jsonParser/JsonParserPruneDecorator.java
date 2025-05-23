@@ -19,6 +19,7 @@ public class JsonParserPruneDecorator extends JsonParserDecorator {
      */
     public JsonParserPruneDecorator(JsonParser parser, String[] keys) {
         super(parser, keys);
+        logger.debug("Creating JsonParserPruneDecorator with parser: " + parser.getClass().getSimpleName() + " and keys: " + String.join(", ", keys));
         this.prune();
     }
 

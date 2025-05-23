@@ -18,29 +18,29 @@ public class JsonToolsController {
 
     @PostMapping("/json/minify")
     public String minify(@RequestBody String text) {
-        logger.debug("Minify json: " + text);
+        logger.info("Minify json: " + text);
 
         JsonParser parser = JsonParserFactory.getParser(text, false);
 
         String out = parser.getString();
-        logger.debug("Minified json: " + out);
+        logger.info("Minified json: " + out);
         return out;
     }
 
     @PostMapping("/json/prettify")
     public String prettify(@RequestBody String text) {
-        logger.debug("Prettify json: " + text);
+        logger.info("Prettify json: " + text);
 
         JsonParser parser = JsonParserFactory.getParser(text, true);
 
         String out = parser.getString();
-        logger.debug("Prettified json: " + out);
+        logger.info("Prettified json: " + out);
         return out;
     }
 
     @PostMapping("/json/query-keys")
     public String query(@RequestBody JsonTransformRequest request) {
-        logger.debug("Query json keys: " + Arrays.toString(request.getKeys())
+        logger.info("Query json keys: " + Arrays.toString(request.getKeys())
                 + "; json: " + request.getJson()
                 + "; pretty: " + request.getPretty());
 
@@ -52,13 +52,13 @@ public class JsonToolsController {
         );
 
         String out = parser.getString();
-        logger.debug("Queried json: " + out);
+        logger.info("Queried json: " + out);
         return out;
     }
 
     @PostMapping("/json/prune-keys")
     public String prune(@RequestBody JsonTransformRequest request) {
-        logger.debug("Prune json keys: " + Arrays.toString(request.getKeys())
+        logger.info("Prune json keys: " + Arrays.toString(request.getKeys())
                 + "; json: " + request.getJson()
                 + "; pretty: " + request.getPretty());
 
@@ -70,16 +70,16 @@ public class JsonToolsController {
         );
 
         String out = parser.getString();
-        logger.debug("Pruned json: " + out);
+        logger.info("Pruned json: " + out);
         return out;
     }
 
     @PostMapping("/text/compare")
     public String compare(@RequestBody TextCompareRequest request) {
-        logger.debug("Compare text: " + request.getText1() + "; text2: " + request.getText2());
+        logger.info("Compare text: " + request.getText1() + "; text2: " + request.getText2());
 
         String out = TextUtils.diff(request.getText1(), request.getText2());
-        logger.debug("Compared text: " + out);
+        logger.info("Compared text: " + out);
         return out;
     }
 }

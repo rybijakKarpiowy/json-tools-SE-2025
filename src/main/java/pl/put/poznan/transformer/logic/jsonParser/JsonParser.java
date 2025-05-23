@@ -1,6 +1,8 @@
 package pl.put.poznan.transformer.logic.jsonParser;
 
 import com.google.gson.JsonElement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pl.put.poznan.transformer.exceptions.JsonParsingException;
 
 
@@ -15,6 +17,8 @@ public abstract class JsonParser {
      * Protected field accessible to subclasses for JSON manipulation.
      */
     protected JsonElement json;
+
+    protected static final Logger logger = LoggerFactory.getLogger(JsonParser.class);
 
     /**
      * Parses a string into a JsonElement.
@@ -38,6 +42,7 @@ public abstract class JsonParser {
      * @throws JsonParsingException if the input string is not valid JSON
      */
     public JsonParser(String jsonRaw) {
+        logger.debug("Creating JsonParser with raw JSON: " + jsonRaw);
         this.json = this.parse(jsonRaw);
     }
 

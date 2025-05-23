@@ -16,6 +16,7 @@ public class JsonParserPrettify extends JsonParser {
      */
     public JsonParserPrettify(String jsonRaw) {
         super(jsonRaw);
+        logger.debug("Creating prettyfied JSON parser with input: " + jsonRaw);
     }
 
     /**

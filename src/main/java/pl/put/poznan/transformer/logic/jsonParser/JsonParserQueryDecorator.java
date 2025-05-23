@@ -18,6 +18,7 @@ public class JsonParserQueryDecorator extends JsonParserDecorator {
      */
     public JsonParserQueryDecorator(JsonParser parser, String[] keys) {
         super(parser, keys);
+        logger.debug("Creating JsonParserQueryDecorator with parser: " + parser.getClass().getSimpleName() + " and keys: " + String.join(", ", keys));
         this.query();
     }
 
