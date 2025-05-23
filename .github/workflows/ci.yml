@@ -6,7 +6,6 @@ on:
     paths-ignore:
       - '**.md'
       - '**.xlxs'
-      - '.github/**'
       - '.gitignore'
       - '.gitattributes'
       
