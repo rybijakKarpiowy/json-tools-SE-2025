@@ -144,6 +144,7 @@
             <option value="jsonQuery">Query JSON Keys</option>
             <option value="jsonPrune">Prune JSON Keys</option>
             <option value="textCompare">Compare Text</option>
+            <option value="jsonValidateStructure">Validate structure</option>
         </select>
 
         <!-- JSON Minify -->
@@ -194,6 +195,24 @@
             <input type="text" id="pruneKeys" placeholder="Keys to prune (comma-separated)">
             <button onclick="pruneJsonKeys()">Prune</button>
             <pre id="pruneResult"></pre>
+        </div>
+
+        <!-- JSON Validate Structure -->
+        <div class="section" id="jsonValidateStructure">
+            <h2>Validate JSON Structure</h2>
+            <div class="input-label">
+                <span>Json</span>
+                <span>Structure</span>
+            </div>
+            <div class="user-input">
+                <textarea id="jsonValidateInput" rows="5" placeholder="Enter JSON"></textarea>
+                <textarea id="jsonValidateInput2" rows="5" placeholder="Enter Structure"></textarea>
+            </div>
+            <label style="margin-left:10px;">
+                <input type="checkbox" id="jsonValidateMinified"> Minify output
+            </label>
+            <button onclick="validateJsonStructure()">Validate</button>
+            <pre id="validateResult"></pre>
         </div>
 
         <!-- Text Compare -->
@@ -261,6 +280,14 @@
             const pretty = !document.getElementById("pruneMinified").checked;
             callApi("/json/prune-keys", "POST", { json, keys, pretty })
                 .then(data => document.getElementById("pruneResult").textContent = data);
+        }
+
+        function validateJsonStructure() {
+            const json = document.getElementById("jsonValidateInput").value;
+            const structure = document.getElementById("jsonValidateInput2").value;
+            const pretty = !document.getElementById("jsonValidateMinified").checked;
+            callApi("/json/validate-structure", "POST", { json, structure, pretty })
+                .then(data => document.getElementById("validateResult").textContent = data);
         }
 
         function compareText() {

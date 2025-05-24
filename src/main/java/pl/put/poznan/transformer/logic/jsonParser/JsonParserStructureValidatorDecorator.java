@@ -1,8 +1,10 @@
 package pl.put.poznan.transformer.logic.jsonParser;
 
 import pl.put.poznan.transformer.logic.jsonParser.JsonParserSimple;
+import pl.put.poznan.transformer.dto.JsonStructureValidationResponse;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.Gson;
 
 /**
  * A decorator for JsonParser that validates whether a JSON object matches a given structure.
@@ -12,6 +14,7 @@ import com.google.gson.JsonObject;
 public class JsonParserStructureValidatorDecorator extends JsonParserDecorator {
     private final JsonObject structure;
     private boolean isValid;
+    private String difference;
 
     /**
      * Creates a new JsonParserStructureValidatorDecorator instance.
@@ -28,22 +31,8 @@ public class JsonParserStructureValidatorDecorator extends JsonParserDecorator {
         this.structure = structure.getAsJsonObject();
 
         logger.debug("Creating JsonParserStructureValidatorDecorator with parser: " + parser.getClass().getSimpleName() + " and structure: " + structureJson);
-        isValid = this.validateStructure();
-    }
 
-    /** 
-     * Returns a string representation of the JSON structure validation result.
-     * If the structure matches, it returns a success message; otherwise, it returns an error message.
-     * This method is used to provide feedback on the validation process.
-     */
-    @Override
-    public String getString() {
-        logger.debug("Validating JSON structure: " + this.json.getAsJsonObject());
-        if (isValid) {
-            return "JSON structure is valid.";
-        } else {
-            return "JSON structure is invalid.";
-        }
+        this.validateStructure();
     }
 
     /**
@@ -51,8 +40,15 @@ public class JsonParserStructureValidatorDecorator extends JsonParserDecorator {
      *
      * @return true if the structure matches, false otherwise
      */
-    public boolean validateStructure() {
-        return validateRecursive(this.structure, this.json.getAsJsonObject());
+    private boolean validateStructure() {
+        logger.debug("Validating JSON structure: " + this.json.getAsJsonObject());
+        isValid = validateRecursive(this.structure, this.json.getAsJsonObject());
+
+        JsonStructureValidationResponse response = new JsonStructureValidationResponse(isValid, difference);
+
+        Gson gson = new Gson();
+        this.json = gson.toJsonTree(response);
+        return isValid;
     }
 
     /**
@@ -65,15 +61,43 @@ public class JsonParserStructureValidatorDecorator extends JsonParserDecorator {
     private boolean validateRecursive(JsonObject structureObj, JsonObject targetObj) {
         for (String key : structureObj.keySet()) {
             if (!targetObj.has(key)) {
+                this.difference = "Missing key: " + key;
                 return false;
             }
             JsonElement structElem = structureObj.get(key);
             JsonElement targetElem = targetObj.get(key);
+
+            // Compare types
             if (structElem.isJsonObject()) {
                 if (!targetElem.isJsonObject()) {
+                    this.difference = "Key '" + key + "' should be an object.";
                     return false;
                 }
                 if (!validateRecursive(structElem.getAsJsonObject(), targetElem.getAsJsonObject())) {
+                    this.difference = "Difference in object at key: " + key + (this.difference != null ? " -> " + this.difference : "");
+                    return false;
+                }
+            } else if (structElem.isJsonArray()) {
+                if (!targetElem.isJsonArray()) {
+                    this.difference = "Key '" + key + "' should be an array.";
+                    return false;
+                }
+                // Optionally, compare array element types if needed
+            } else if (structElem.isJsonPrimitive()) {
+                if (!targetElem.isJsonPrimitive()) {
+                    this.difference = "Key '" + key + "' should be a primitive value.";
+                    return false;
+                }
+                // Compare primitive types (string, number, boolean)
+                if (structElem.getAsJsonPrimitive().isString() != targetElem.getAsJsonPrimitive().isString()
+                    || structElem.getAsJsonPrimitive().isNumber() != targetElem.getAsJsonPrimitive().isNumber()
+                    || structElem.getAsJsonPrimitive().isBoolean() != targetElem.getAsJsonPrimitive().isBoolean()) {
+                    this.difference = "Key '" + key + "' has different primitive type.";
+                    return false;
+                }
+            } else if (structElem.isJsonNull()) {
+                if (!targetElem.isJsonNull()) {
+                    this.difference = "Key '" + key + "' should be null.";
                     return false;
                 }
             }

@@ -78,6 +78,7 @@ public class JsonToolsController {
     @PostMapping("/json/validate-structure")
     public String validateStructure(@RequestBody JsonValidateStructureRequest request) {
         logger.info("Validate json structure: " + request.getJson()
+                + "; structure: " + request.getStructure()
                 + "; pretty: " + request.getPretty());
 
         JsonParser parser = JsonParserFactory.getParser(
