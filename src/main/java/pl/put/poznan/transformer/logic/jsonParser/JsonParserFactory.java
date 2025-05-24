@@ -39,6 +39,8 @@ public class JsonParserFactory {
                 return new JsonParserPruneDecorator(parser, keys);
             case QUERY:
                 return new JsonParserQueryDecorator(parser, keys);
+            case VALIDATE:
+                return new JsonParserStructureValidatorDecorator(parser, keys);
             default:
                 return parser;
         }

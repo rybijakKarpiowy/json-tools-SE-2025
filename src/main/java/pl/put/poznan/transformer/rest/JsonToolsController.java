@@ -3,6 +3,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import pl.put.poznan.transformer.dto.JsonTransformRequest;
+import pl.put.poznan.transformer.dto.JsonValidateStructureRequest;
 import pl.put.poznan.transformer.dto.TextCompareRequest;
 import pl.put.poznan.transformer.logic.TextUtils;
 import pl.put.poznan.transformer.logic.jsonParser.*;
@@ -71,6 +72,23 @@ public class JsonToolsController {
 
         String out = parser.getString();
         logger.info("Pruned json: " + out);
+        return out;
+    }
+
+    @PostMapping("/json/validate-structure")
+    public String validateStructure(@RequestBody JsonValidateStructureRequest request) {
+        logger.info("Validate json structure: " + request.getJson()
+                + "; pretty: " + request.getPretty());
+
+        JsonParser parser = JsonParserFactory.getParser(
+                request.getJson(),
+                request.getPretty(),
+                DecoratorType.VALIDATE,
+                new String[]{request.getStructure()}
+        );
+
+        String out = parser.getString();
+        logger.info("Is valid structure: " + out);
         return out;
     }
 
