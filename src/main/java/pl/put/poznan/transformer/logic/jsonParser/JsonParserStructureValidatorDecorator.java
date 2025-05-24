@@ -20,7 +20,7 @@ public class JsonParserStructureValidatorDecorator extends JsonParserDecorator {
      * Creates a new JsonParserStructureValidatorDecorator instance.
      *
      * @param parser    The JsonParser instance to be decorated
-     * @param structureJson JSON string representing the required structure
+     * @param keys  Array of keys where the first element is a JSON string representing the structure to validate against.
      */
     public JsonParserStructureValidatorDecorator(JsonParser parser, String[] keys) {
         super(parser, keys);
