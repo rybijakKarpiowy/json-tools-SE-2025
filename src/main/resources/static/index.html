@@ -116,6 +116,12 @@
             justify-content: center;
         }
 
+        .input-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
         @media (max-width: 600px) {
             .container {
                 padding: 16px 4vw 12px 4vw;
@@ -166,6 +172,10 @@
             <div class="user-input">
                 <textarea id="jsonQueryInput" rows="5" placeholder="Enter JSON"></textarea>
             </div>
+            <label style="margin-left:10px;">
+                <input type="checkbox" id="queryMinified"> Minify output
+            </label>
+            <br/>
             <input type="text" id="queryKeys" placeholder="Keys (comma-separated)">
             <button onclick="queryJsonKeys()">Query</button>
             <pre id="queryResult"></pre>
@@ -177,6 +187,10 @@
             <div class="user-input">
                 <textarea id="jsonPruneInput" rows="5" placeholder="Enter JSON"></textarea>
             </div>
+            <label style="margin-left:10px;">
+                <input type="checkbox" id="pruneMinified"> Minify output
+            </label>
+            <br/>
             <input type="text" id="pruneKeys" placeholder="Keys to prune (comma-separated)">
             <button onclick="pruneJsonKeys()">Prune</button>
             <pre id="pruneResult"></pre>
@@ -236,14 +250,16 @@
         function queryJsonKeys() {
             const json = document.getElementById("jsonQueryInput").value;
             const keys = document.getElementById("queryKeys").value.split(",").map(v => v.trim());
-            callApi("/json/query-keys", "POST", { json, keys })
+            const pretty = !document.getElementById("queryMinified").checked;
+            callApi("/json/query-keys", "POST", { json, keys, pretty })
                 .then(data => document.getElementById("queryResult").textContent = data);
         }
 
         function pruneJsonKeys() {
             const json = document.getElementById("jsonPruneInput").value;
             const keys = document.getElementById("pruneKeys").value.split(",").map(v => v.trim());
-            callApi("/json/prune-keys", "POST", { json, keys })
+            const pretty = !document.getElementById("pruneMinified").checked;
+            callApi("/json/prune-keys", "POST", { json, keys, pretty })
                 .then(data => document.getElementById("pruneResult").textContent = data);
         }
 
