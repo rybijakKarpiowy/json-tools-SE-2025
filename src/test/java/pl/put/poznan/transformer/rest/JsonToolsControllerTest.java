@@ -140,13 +140,10 @@ class JsonToolsControllerTest {
     @Test
     @DisplayName("Should prune JSON keys with minify option")
     void shouldPruneJsonKeysWithMinifyOption() {
-        // Given
         JsonTransformRequest request = new JsonTransformRequest();
         request.setJson(SAMPLE_JSON);
         request.setPretty(false); // minify
         request.setKeys(new String[]{"key1", "key2", "key3"});
-
-        // When & Then
         try (MockedStatic<JsonParserFactory> mockedFactory = mockStatic(JsonParserFactory.class)) {
             mockedFactory.when(() -> JsonParserFactory.getParser(
                             request.getJson(),
@@ -154,11 +151,7 @@ class JsonToolsControllerTest {
                             DecoratorType.PRUNE,
                             request.getKeys()))
                     .thenReturn(mockParser);
-
-            // When
             String result = controller.prune(request);
-
-            // Then
             assertEquals(EXPECTED_OUTPUT, result);
             mockedFactory.verify(() -> JsonParserFactory.getParser(
                     request.getJson(),
@@ -171,21 +164,14 @@ class JsonToolsControllerTest {
     @Test
     @DisplayName("Should compare texts and return diff result")
     void shouldCompareTextsAndReturnDiffResult() {
-        // Given
         TextCompareRequest request = new TextCompareRequest();
         request.setText1("line1\nline2");
         request.setText2("line1\nmodified_line2");
         String expectedDiff = "Difference found at line 2:\n  -  line2\n  +  modified_line2";
-
-        // When & Then
         try (MockedStatic<TextUtils> mockedTextUtils = mockStatic(TextUtils.class)) {
             mockedTextUtils.when(() -> TextUtils.diff(request.getText1(), request.getText2()))
                     .thenReturn(expectedDiff);
-
-            // When
             String result = controller.compare(request);
-
-            // Then
             assertEquals(expectedDiff, result);
             mockedTextUtils.verify(() -> TextUtils.diff(request.getText1(), request.getText2()));
         }
@@ -194,20 +180,13 @@ class JsonToolsControllerTest {
     @Test
     @DisplayName("Should compare identical texts and return empty result")
     void shouldCompareIdenticalTextsAndReturnEmptyResult() {
-        // Given
         TextCompareRequest request = new TextCompareRequest();
         request.setText1("same text");
         request.setText2("same text");
-
-        // When & Then
         try (MockedStatic<TextUtils> mockedTextUtils = mockStatic(TextUtils.class)) {
             mockedTextUtils.when(() -> TextUtils.diff(request.getText1(), request.getText2()))
                     .thenReturn("");
-
-            // When
             String result = controller.compare(request);
-
-            // Then
             assertEquals("", result);
             mockedTextUtils.verify(() -> TextUtils.diff(request.getText1(), request.getText2()));
         }
@@ -216,18 +195,11 @@ class JsonToolsControllerTest {
     @Test
     @DisplayName("Should handle empty JSON input for minify")
     void shouldHandleEmptyJsonInputForMinify() {
-        // Given
         String emptyJson = "";
-
-        // When & Then
         try (MockedStatic<JsonParserFactory> mockedFactory = mockStatic(JsonParserFactory.class)) {
             mockedFactory.when(() -> JsonParserFactory.getParser(emptyJson, false))
                     .thenReturn(mockParser);
-
-            // When
             String result = controller.minify(emptyJson);
-
-            // Then
             assertEquals(EXPECTED_OUTPUT, result);
             mockedFactory.verify(() -> JsonParserFactory.getParser(emptyJson, false));
         }
@@ -236,18 +208,11 @@ class JsonToolsControllerTest {
     @Test
     @DisplayName("Should handle empty JSON input for prettify")
     void shouldHandleEmptyJsonInputForPrettify() {
-        // Given
         String emptyJson = "";
-
-        // When & Then
         try (MockedStatic<JsonParserFactory> mockedFactory = mockStatic(JsonParserFactory.class)) {
             mockedFactory.when(() -> JsonParserFactory.getParser(emptyJson, true))
                     .thenReturn(mockParser);
-
-            // When
             String result = controller.prettify(emptyJson);
-
-            // Then
             assertEquals(EXPECTED_OUTPUT, result);
             mockedFactory.verify(() -> JsonParserFactory.getParser(emptyJson, true));
         }
