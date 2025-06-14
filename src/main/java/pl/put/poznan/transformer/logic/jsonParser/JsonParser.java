@@ -28,6 +28,9 @@ public abstract class JsonParser {
      * @throws JsonParsingException if the input string is not valid JSON
      */
     private JsonElement parse(String text) {
+        if (text == null || text.isEmpty()) {
+            throw new JsonParsingException("Empty json string");
+        }
         try {
             return com.google.gson.JsonParser.parseString(text);
         } catch (Exception e) {

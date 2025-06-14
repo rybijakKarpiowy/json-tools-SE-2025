@@ -1,4 +1,5 @@
 package pl.put.poznan.transformer.logic.jsonParser;
+import pl.put.poznan.transformer.exceptions.JsonParsingException;
 
 
 /**
