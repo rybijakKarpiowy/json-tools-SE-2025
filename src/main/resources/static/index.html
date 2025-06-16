@@ -208,9 +208,6 @@
                 <textarea id="jsonValidateInput" rows="5" placeholder="Enter JSON"></textarea>
                 <textarea id="jsonValidateInput2" rows="5" placeholder="Enter Structure"></textarea>
             </div>
-            <label style="margin-left:10px;">
-                <input type="checkbox" id="jsonValidateMinified"> Minify output
-            </label>
             <button onclick="validateJsonStructure()">Validate</button>
             <pre id="validateResult"></pre>
         </div>
@@ -285,9 +282,11 @@
         function validateJsonStructure() {
             const json = document.getElementById("jsonValidateInput").value;
             const structure = document.getElementById("jsonValidateInput2").value;
-            const pretty = !document.getElementById("jsonValidateMinified").checked;
-            callApi("/json/validate-structure", "POST", { json, structure, pretty })
-                .then(data => document.getElementById("validateResult").textContent = data);
+            callApi("/json/validate-structure", "POST", { json, structure, pretty: true })
+                .then(data => {
+                    const parsed = JSON.parse(data);
+                    document.getElementById("validateResult").textContent = JSON.stringify(parsed);
+                });
         }
 
         function compareText() {
