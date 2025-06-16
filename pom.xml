@@ -6,7 +6,7 @@
 
     <groupId>pl.put.poznan</groupId>
     <artifactId>json-tools-app</artifactId>
-    <version>0.3.7</version>
+    <version>0.3.6</version>
     <name>JsonToolsApp</name>
     <description>A simple Spring Boot application for JSON tools</description>
     <url>https://github.com/rybijakKarpiowy/json-tools-SE-2025</url>
